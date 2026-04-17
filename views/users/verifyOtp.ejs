@@ -1,0 +1,21 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="container mt-5 col-4">
+    <h2 class="mb-4">Verify Your Email</h2>
+
+    <form action="/verify-otp" method="POST">
+        <input type="hidden" name="userId" value="<%= userId %>">
+
+        <label class="form-label">Enter OTP</label>
+        <input type="number" name="otp" class="form-control mb-3" required />
+
+        <button class="btn btn-dark w-100">Verify</button>
+    </form>
+
+    <p class="mt-3 text-center">
+        Didn't receive OTP?
+        <a href="/resend-otp/<%= userId %>" class="fw-bold text-primary">
+            Resend OTP
+        </a>
+    </p>
+</div>

@@ -1,0 +1,160 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+    #filters{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .filter{
+        text-align: center;
+        margin-right: 2rem;
+        margin-top: 1rem;
+        opacity: 0.7;
+    }
+    .filter:hover{
+        opacity: 1;
+        cursor: pointer;
+    }
+    .filter p{
+        font-size: 0.8rem;
+    }
+    .tax-info{
+        display: none;
+    }
+    .tax-toggle{
+        border:1px solid black;
+        border-radius: 1rem;
+        height: 3.25rem;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+</style>
+
+<div id="filters" class="container-fluid">
+
+    <!-- Hamburger button -->
+    <button 
+        class="btn btn-outline-secondary d-lg-none me-2" 
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#filterMenu"
+        aria-expanded="false"
+        aria-controls="filterMenu"
+    >
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- CLICKABLE CATEGORY FILTERS -->
+    <div class="collapse d-lg-flex flex-wrap align-items-center" id="filterMenu">
+
+        <a href="/listings/category/Trending" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </a>
+
+        <a href="/listings/category/Rooms" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </a>
+
+        <a href="/listings/category/Iconic cities" class="filter text-decoration-none text-dark">
+            <div><i class="fa-regular fa-building"></i></div>
+            <p>Iconic cities</p>
+        </a>
+
+        <a href="/listings/category/Amazing Views" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-school-flag"></i></div>
+            <p>Amazing Views</p>
+        </a>
+
+        <a href="/listings/category/Amazing pools" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p>Amazing pools</p>
+        </a>
+
+        <a href="/listings/category/Mountain" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-mountain"></i></div>
+            <p>Mountain</p>
+        </a>
+
+        <a href="/listings/category/Beach" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-umbrella-beach"></i></div>
+            <p>Beach</p>
+        </a>
+
+        <a href="/listings/category/Lakefront" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-snowflake"></i></div>
+            <p>Lakefront</p>
+        </a>
+
+        <a href="/listings/category/Farms" class="filter text-decoration-none text-dark">
+            <div><i class="fa-solid fa-tractor"></i></div>
+            <p>Farms</p>
+        </a>
+
+    </div>
+
+    <!-- TAX TOGGLE -->
+    <div class="tax-toggle ms-auto mt-2 mt-lg-0">
+        <div class="form-check-reverse form-switch">
+            <input 
+                class="form-check-input" 
+                type="checkbox" 
+                role="switch" 
+                id="switchCheckDefault"
+            >
+            <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
+        </div>
+    </div>
+</div>
+
+<!-- LISTINGS -->
+<% if (allListings.length === 0) { %>
+    <div class="alert alert-warning mt-4" role="alert">
+        No listings found in database. Run <code>npm run seed</code> once, then refresh this page.
+    </div>
+<% } %>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+    <% for(let listing of allListings) { %>
+        <div class="col">
+            <div class="card listing-card" style="width: 20rem;">
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+                    <img
+                        src="<%= resolveImageUrl(listing.image, listingFallbackImage) %>"
+                        class="card-img-top"
+                        alt="listing_image"
+                        style="height: 20rem;"
+                        onerror="this.onerror=null;this.src='<%= listingFallbackImage %>';"
+                    />
+                </a>
+
+                <div class="card-body">
+                    <p class="card-text">
+                        <b><%= listing.title %></b><br/>
+                        &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                        <i class="tax-info">&nbsp; &nbsp;+18% GST</i>
+                        <br>
+                        <span class="text-muted" style="font-size:0.8rem;">
+                            <%= listing.category %>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    let taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("click", () => {
+        let taxInfo = document.getElementsByClassName("tax-info");
+        for (info of taxInfo) {
+            info.style.display = info.style.display !== "inline" ? "inline" : "none";
+        }
+    });
+</script>
