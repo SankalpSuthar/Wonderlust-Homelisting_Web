@@ -12,8 +12,6 @@
   ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
   ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
   
-  [![GitHub Stars](https://img.shields.io/github/stars/harsh-pro-max/airbnb-homeListing-site-clone?style=social)](https://github.com/harsh-pro-max/airbnb-homeListing-site-clone)
-  [![GitHub Forks](https://img.shields.io/github/forks/harsh-pro-max/airbnb-homeListing-site-clone?style=social)](https://github.com/harsh-pro-max/airbnb-homeListing-site-clone/fork)
 
 </div>
 
@@ -119,8 +117,8 @@ mongod --version  # MongoDB installed
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/harsh-pro-max/airbnb-homeListing-site-clone.git
-cd airbnb-homeListing-site-clone
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
 
 # 2. Install dependencies
 npm install
@@ -260,16 +258,13 @@ GET    /logout          # Logout user
 
 <div align="center">
 
-**Harsh Kushwah**  
+**Sankalp Suthar**  
 🎓 Full-Stack Developer in Training | 📚 Delta Batch @ Apna College
 
-[![GitHub](https://img.shields.io/badge/GitHub-harsh--pro--max-181717?style=for-the-badge&logo=github)](https://github.com/harsh-pro-max)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/your-profile)
-[![Portfolio](https://img.shields.io/badge/Portfolio-Visit-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://your-portfolio.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/sankalpsuthar)
 
 </div>
 
 ---
-
 
 

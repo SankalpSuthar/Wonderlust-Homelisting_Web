@@ -20,7 +20,7 @@
     "mongodb",
     "ejs"
   ],
-  "author": "Harsh Kushwah",
+  "author": "Sankalp Suthar",
   "license": "MIT",
   "dependencies": {
     "@getbrevo/brevo": "^3.0.1",
