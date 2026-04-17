@@ -126,7 +126,7 @@ npm install
 # 3. Set up environment variables
 cat > .env << EOF
 MONGODB_URI=mongodb://localhost:27017/airbnb-clone
-SESSION_SECRET=your-super-secret-key-here
+SECRET=your-super-secret-key-here
 PORT=3000
 EOF
 
@@ -266,4 +266,3 @@ GET    /logout          # Logout user
 </div>
 
 ---
-

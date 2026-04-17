@@ -19,29 +19,25 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const bookingRouter = require("./routes/bookings.js");
+const { connectToDatabase, dbUrl } = require("./db");
 
 
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
+const isProduction = process.env.NODE_ENV === "production";
+const sessionSecret =
+  process.env.SECRET ||
+  process.env.SESSION_SECRET ||
+  (isProduction ? "temporary-production-secret" : "dev-secret");
 
-
-const dbUrl =
-  process.env.ATLASDB_URL ||
-  process.env.MONGODB_URI ||
-  "mongodb://127.0.0.1:27017/wanderlust";
-main()
+connectToDatabase()
   .then(() => {
     console.log("connected to DB");
   })
   .catch((err) => {
-    console.log(err);
+    console.log("MongoDB connection error:", err.message);
   });
-
-
-async function main() {
-  await mongoose.connect(dbUrl);
-}
 
 
 app.set("view engine", "ejs");
@@ -116,13 +112,12 @@ function resolveImageUrl(imageLike, fallback = "/gallery/img1.png") {
   return fallback;
 }
 
-
-const store=MongoStore.create({
-  mongoUrl:dbUrl,
-  crypto:{
-    secret:process.env.SECRET,
+const store = MongoStore.create({
+  clientPromise: connectToDatabase().then(() => mongoose.connection.getClient()),
+  crypto: {
+    secret: sessionSecret,
   },
-  touchAfter:24 * 3600,
+  touchAfter: 24 * 3600,
 });
 
 
@@ -133,18 +128,23 @@ store.on("error",(err)=>{
 
 const sessionOptions = {
   store,
-  secret: process.env.SECRET,
+  secret: sessionSecret,
   resave:false,
-  saveUninitialized:true,
+  saveUninitialized:false,
   cookie:{
-    expire: Date.now() + 3 * 24 * 60 * 60 * 1000,
+    expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
     maxAge: 3 * 24 * 60 * 60 * 1000,
     httpOnly:true,
+    sameSite:"lax",
+    secure:isProduction,
   },
 };
 
 
 // middlewares
+if (isProduction) {
+  app.set("trust proxy", 1);
+}
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -166,6 +166,20 @@ app.use((req,res,next)=>{
   res.locals.listingFallbackImage = "/gallery/img1.png";
   res.locals.avatarFallbackImage = "/gallery/img10.png";
   next();
+});
+
+app.use(async (_req, _res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (err) {
+    next(
+      new ExpressError(
+        503,
+        "Database connection failed. Check your Vercel environment variables and MongoDB Atlas network access."
+      )
+    );
+  }
 });
 
 
