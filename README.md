@@ -271,26 +271,5 @@ GET    /logout          # Logout user
 
 ---
 
-## 🙏 Acknowledgments
 
-- **[Shradha Khapra](https://www.linkedin.com/in/shradha-khapra/)** - Mentor & Instructor
-- **[Apna College](https://www.apnacollege.in/)** - Delta Batch Program
-- **Delta Batch Community** - Fellow learners & supporters
 
----
-
-## 📄 License
-
-This project is built for educational purposes as part of the Delta Batch curriculum.
-
----
-
-<div align="center">
-
-### ⭐ Star this repo if you found it helpful!
-
-**Made with ❤️ by [Harsh Kushwah](https://github.com/harsh-pro-max)**
-
-*Last Updated: October 26, 2025*
-
-</div>
