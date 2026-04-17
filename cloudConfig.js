@@ -9,6 +9,8 @@ const isCloudinaryConfigured = Boolean(
     process.env.CLOUD_API_KEY &&
     process.env.CLOUD_API_SECRET
 );
+const isProduction = process.env.NODE_ENV === "production";
+let uploadConfigError = null;
 
 let storage;
 
@@ -22,10 +24,15 @@ if (isCloudinaryConfigured) {
   storage = new CloudinaryStorage({
     cloudinary,
     params: {
-      folder: "wanderlust_DEV",
+      folder: isProduction ? "wanderlust" : "wanderlust_dev",
       allowedFormats: ["png", "jpg", "jpeg", "webp"],
     },
   });
+} else if (isProduction) {
+  storage = multer.memoryStorage();
+  uploadConfigError =
+    "Image uploads require Cloudinary on production. Add CLOUD_NAME, CLOUD_API_KEY, and CLOUD_API_SECRET in Vercel.";
+  console.warn(uploadConfigError);
 } else {
   const uploadsDir = path.join(__dirname, "uploads");
   if (!fs.existsSync(uploadsDir)) {
@@ -49,4 +56,5 @@ module.exports = {
   cloudinary,
   storage,
   isCloudinaryConfigured,
+  uploadConfigError,
 };

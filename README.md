@@ -21,13 +21,13 @@
 <div align="center">
   
   ### 🏡 Browse Listings
-  <img src="gallery/img1.png" alt="Browse all property listings" width="750"/>
+  <img src="public/gallery/img1.png" alt="Browse all property listings" width="750"/>
   
   ### 🔍 Listing Details & Reviews
-  <img src="gallery/img2.png" alt="Listing details with reviews" width="750"/>
+  <img src="public/gallery/img2.png" alt="Listing details with reviews" width="750"/>
   
   ### 🔐 User Authentication
-  <img src="gallery/img3.png" alt="Secure signup and login system" width="750"/>
+  <img src="public/gallery/img3.png" alt="Secure signup and login system" width="750"/>
 
 </div>
 
@@ -266,5 +266,4 @@ GET    /logout          # Logout user
 </div>
 
 ---
-
 

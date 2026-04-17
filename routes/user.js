@@ -7,7 +7,7 @@ const { isLoggedIn } = require("../middleware");
 
 // ✅ Add multer + cloudinary upload
 const multer = require("multer");
-const { storage } = require("../cloudConfig");
+const { storage, uploadConfigError } = require("../cloudConfig");
 const upload = multer({ storage });
 
 const uploadAvatarImage = (req, res, next) => {
@@ -15,6 +15,10 @@ const uploadAvatarImage = (req, res, next) => {
     if (err) {
       console.error("Avatar upload error:", err.message);
       req.flash("error", `Avatar upload failed: ${err.message}`);
+      return res.redirect("/edit-profile");
+    }
+    if (req.file && uploadConfigError) {
+      req.flash("error", uploadConfigError);
       return res.redirect("/edit-profile");
     }
     next();

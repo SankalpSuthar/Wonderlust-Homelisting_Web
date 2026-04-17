@@ -50,7 +50,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
-app.use("/gallery", express.static(path.join(__dirname, "gallery")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 function resolveLocalImageByFilename(fileName) {
@@ -58,7 +57,7 @@ function resolveLocalImageByFilename(fileName) {
 
   const encodedName = encodeURIComponent(fileName);
   const candidateRoots = [
-    { dir: path.join(__dirname, "gallery"), webPath: "/gallery" },
+    { dir: path.join(__dirname, "public", "gallery"), webPath: "/gallery" },
     { dir: path.join(__dirname, "public", "images"), webPath: "/images" },
     { dir: path.join(__dirname, "public", "uploads"), webPath: "/uploads" },
     { dir: path.join(__dirname, "uploads"), webPath: "/uploads" },
@@ -202,25 +201,29 @@ app.use((err, req, res, next) => {
 });
 
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`server is listening to port ${PORT}`);
+if (require.main === module) {
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`server is listening to port ${PORT}`);
 
-  if (process.env.NODE_ENV !== "production" && process.env.AUTO_OPEN_BROWSER !== "false") {
-    const url = `http://localhost:${PORT}`;
-    const openCmd =
-      process.platform === "win32"
-        ? `start "" "${url}"`
-        : process.platform === "darwin"
-        ? `open "${url}"`
-        : `xdg-open "${url}"`;
+    if (process.env.NODE_ENV !== "production" && process.env.AUTO_OPEN_BROWSER !== "false") {
+      const url = `http://localhost:${PORT}`;
+      const openCmd =
+        process.platform === "win32"
+          ? `start "" "${url}"`
+          : process.platform === "darwin"
+          ? `open "${url}"`
+          : `xdg-open "${url}"`;
 
-    exec(openCmd, (err) => {
-      if (err) {
-        console.warn(`Could not auto-open browser: ${err.message}`);
-      }
-    });
-  }
-});
+      exec(openCmd, (err) => {
+        if (err) {
+          console.warn(`Could not auto-open browser: ${err.message}`);
+        }
+      });
+    }
+  });
+}
+
+module.exports = app;
 
 

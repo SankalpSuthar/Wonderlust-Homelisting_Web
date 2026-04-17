@@ -6,7 +6,7 @@ const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 
 const multer = require("multer");
-const { storage } = require("../cloudConfig.js");
+const { storage, uploadConfigError } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
 const uploadListingImage = (req, res, next) => {
@@ -14,6 +14,10 @@ const uploadListingImage = (req, res, next) => {
     if (err) {
       console.error("Listing image upload error:", err.message);
       req.flash("error", `Image upload failed: ${err.message}`);
+      return res.redirect(req.get("referer") || "/listings/new");
+    }
+    if (req.file && uploadConfigError) {
+      req.flash("error", uploadConfigError);
       return res.redirect(req.get("referer") || "/listings/new");
     }
     next();
